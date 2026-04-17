@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cabin Info & Availability</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RMLM6D3BN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-7RMLM6D3BN');
+  </script>
+
   <style>
     :root {
       --bg: #f7f5ef;
@@ -90,13 +100,6 @@
       color: var(--accent);
     }
 
-    .btn-secondary {
-      background: rgba(255,255,255,0.12);
-      color: white;
-      border-color: rgba(255,255,255,0.35);
-      backdrop-filter: blur(4px);
-    }
-
     .grid {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -115,10 +118,6 @@
     .card h2 {
       margin-top: 0;
       font-size: 1.45rem;
-    }
-
-    .muted {
-      color: var(--muted);
     }
 
     .details-list {
@@ -143,14 +142,6 @@
       object-fit: cover;
       border-radius: 14px;
       border: 1px solid var(--border);
-    }
-
-    .calendar-frame {
-      width: 100%;
-      min-height: 700px;
-      border: 0;
-      border-radius: 14px;
-      background: #fff;
     }
 
     .contact-box {
@@ -185,10 +176,6 @@
       .gallery img {
         height: 220px;
       }
-
-      .calendar-frame {
-        min-height: 600px;
-      }
     }
   </style>
 </head>
@@ -200,8 +187,7 @@
         We invite you to spend a relaxing getaway, surrounded by quiet woods, fresh air, and the simplicity of time away.
       </p>
       <div class="top-actions">
-        <a class="btn btn-primary" href="https://calendar.google.com/calendar/u/0/embed?src=5e7c29ebb47f4d2cc35effba6dc72546daed585293fa47f6a744991e457dac00@group.calendar.google.com&ctz=America/Phoenix" target="_blank" rel="noopener noreferrer">View Availability</a>
-        
+        <a class="btn btn-primary" href="https://calendar.google.com/calendar/u/0/embed?src=5e7c29ebb47f4d2cc35effba6dc72546daed585293fa47f6a744991e457dac00@group.calendar.google.com&ctz=America/Phoenix" target="_blank">View Availability</a>
       </div>
     </div>
   </header>
@@ -217,7 +203,6 @@
         <ul class="details-list">
           <li>Secluded setting with no neighbors</li>
           <li>On-site hiking and frequent wildlife sightings</li>
-          
           <li>Maximum 2 guests • Adults only</li>
           <li>Please keep stays to 5 nights or less</li>
         </ul>
@@ -231,27 +216,20 @@
           <p><strong>Phone:</strong> <a href="tel:+17406013959">740-601-3959</a></p>
           <p><strong>Booking note:</strong> Contact us to confirm scheduling.</p>
         </div>
-        <p class="note">
-          Please reach out directly with any questions or date requests.
-        </p>
       </div>
     </section>
 
     <section class="card" style="margin-top: 22px;">
       <h2>Photos</h2>
-      
       <div class="gallery">
         <img src="bed.jpg" alt="Bedroom" />
         <img src="deck.jpg" alt="Deck view" />
-        <img src="woods.jpg" alt="Hiking trail in woods" />
+        <img src="woods.jpg" alt="Woods" />
       </div>
     </section>
 
-    
-
     <section class="card" style="margin-top: 22px;">
       <h2>Guest Notes</h2>
-      
 
       <p>
         At the end of your stay, simply lock the cabin and leave the keys in the lock box. A cleaning service will handle all bedding, laundry, and preparation for the next guest, and we ask that you pay the one-time cleaning fee (approximately $85).
@@ -260,11 +238,6 @@
       <p>
         Contributions toward ongoing upkeep and operating expenses are always appreciated but never expected—just let us know if you’d like to contribute additional funds.
       </p>
-
-      <!--
-        OPTIONAL: If you later want Disqus comments, their universal embed code can go here.
-        You would need a Disqus account and site shortname.
-      -->
     </section>
   </main>
 
