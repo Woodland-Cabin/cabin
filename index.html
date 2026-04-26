@@ -1,355 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cabin Info & Availability</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greenbrier Ridge Hideaway</title>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RMLM6D3BN"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
-    gtag('js', new Date());
-    gtag('config', 'G-7RMLM6D3BN');
-  </script>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(rgba(20,15,10,0.65), rgba(20,15,10,0.65)), url('wood.jpg') center/cover;
+}
 
-  <style>
-    :root {
-      --bg: #2b1f14;
-      --card: #f2e9dc;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --accent: #5f4b32;
-      --accent-2: #8b6f47;
-      --border: #e5e7eb;
-      --shadow: 0 8px 24px rgba(0,0,0,0.08);
-      --radius: 18px;
-      --maxw: 1100px;
-    }
+.hero {
+  background: url('hero.jpg') center/cover;
+  color: white;
+  padding: 80px 20px;
+}
 
-    * { box-sizing: border-box; }
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background: linear-gradient(rgba(20,15,10,0.65), rgba(20,15,10,0.65)), url('wood.jpg') center/cover;
-      line-height: 1.55;
-    }
+.hero p {
+  max-width: 600px;
+}
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
+.btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: white;
+  color: black;
+  border-radius: 25px;
+  text-decoration: none;
+}
 
-    a:hover { text-decoration: underline; }
+.wrap {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
 
-    .wrap {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: 20px;
-    }
+.card {
+  background: #f2e9dc;
+  padding: 20px;
+  border-radius: 20px;
+  margin-top: 20px;
+}
 
-    .hero {
-      background: linear-gradient(rgba(0,0,0,0.22), rgba(0,0,0,0.22)),
-        url('hero.jpg') center 68%/cover;
-      color: white;
-      min-height: 460px;
-      display: flex;
-      align-items: end;
-      border-radius: 0 0 28px 28px;
-      box-shadow: var(--shadow);
-    }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
 
-    .hero-content {
-      width: 100%;
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: 32px 20px;
-    }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+}
 
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(2rem, 4vw, 3.4rem);
-    }
+.gallery img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 15px;
+  cursor: pointer;
+}
 
-    .hero p {
-      margin: 0;
-      max-width: 700px;
-      font-size: 1.05rem;
-    }
+.contact-box {
+  background: rgba(242,233,220,0.9);
+  padding: 15px;
+  border-radius: 15px;
+}
 
-    .top-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
+/* LIGHTBOX */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+}
 
-    .btn {
-      display: inline-block;
-      padding: 12px 18px;
-      border-radius: 999px;
-      font-weight: bold;
-      border: 1px solid transparent;
-    }
+.lightbox.active {
+  display: flex;
+}
 
-    .btn-primary {
-      background: white;
-      color: var(--accent);
-    }
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 22px;
-      margin-top: 24px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: var(--shadow);
-    }
-
-    .card h2 {
-      margin-top: 0;
-      font-size: 1.45rem;
-    }
-
-    .details-list {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    .details-list li {
-      margin: 8px 0;
-    }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    .gallery img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
-    }
-
-    .gallery img:hover {
-      transform: scale(1.02);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-    }
-
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.82);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .lightbox.active {
-      display: flex;
-    }
-
-    .lightbox img {
-      max-width: min(94vw, 1400px);
-      max-height: 88vh;
-      width: auto;
-      height: auto;
-      border-radius: 16px;
-      box-shadow: 0 18px 48px rgba(0,0,0,0.35);
-      background: #111;
-    }
-
-    .lightbox-close {
-      position: absolute;
-      top: 18px;
-      right: 24px;
-      font-size: 2.2rem;
-      line-height: 1;
-      color: white;
-      background: transparent;
-      border: 0;
-      cursor: pointer;
-      padding: 8px;
-    }
-
-    .contact-box {
-      background: rgba(242,233,220,0.9);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-    }
-
-    .note {
-      font-size: 0.95rem;
-      color: var(--muted);
-      margin-top: 10px;
-    }
-
-    .footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.95rem;
-      padding: 26px 0 40px;
-    }
-
-    @media (max-width: 860px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .gallery {
-        grid-template-columns: 1fr;
-      }
-
-      .gallery img {
-        height: 220px;
-      }
-    }
-  </style>
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+</style>
 </head>
+
 <body>
-  <header class="hero">
-    <div class="hero-content">
-      <h1>Greenbrier Ridge Hideaway</h1>
-      <p>
-        You are invited to spend a relaxing getaway, surrounded by quiet woods, fresh air, and the simplicity of time away.
-      </p>
-      <div class="top-actions">
-        <a class="btn btn-primary" href="https://calendar.google.com/calendar/u/0/embed?src=5e7c29ebb47f4d2cc35effba6dc72546daed585293fa47f6a744991e457dac00@group.calendar.google.com&ctz=America/Phoenix" target="_blank">View Availability</a>
-      </div>
-    </div>
-  </header>
 
-  <main class="wrap">
-    
+<div class="hero">
+  <h1>Greenbrier Ridge Hideaway</h1>
+  <p>You are invited to spend a relaxing getaway, surrounded by quiet woods, fresh air, and the simplicity of time away.</p>
+  <a class="btn" href="https://calendar.google.com" target="_blank">View Availability</a>
+</div>
 
-    <section class="grid">
-      <div class="card">
-        <h2>About the Cabin</h2>
-        <p>
-          Nestled in the Hocking Hills, Greenbrier Ridge Hideaway offers privacy, quiet, and a true escape. The property features hiking trails, abundant wildlife, and even a hidden cave—along with all the comforts of home.
-        </p>
-        <ul class="details-list">
-          <li>Secluded setting with no neighbors</li>
-          <li>On-site hiking and frequent wildlife sightings</li>
-          <li>Maximum 2 guests • Adults only</li>
-          <li>Please keep stays to 5 nights or less</li>
-        </ul>
-      </div>
+<div class="wrap">
 
-      <div class="card">
-        <h2>Contact</h2>
-        <div class="contact-box">
-          <p><strong>Name:</strong> Scott Fouts</p>
-          <p><strong>Email:</strong> <a href="mailto:scott.fouts@yahoo.com">scott.fouts@yahoo.com</a></p>
-          <p><strong>Text:</strong> <a href="sms:+17406013959">740-601-3959</a></p>
-          <p><strong>Booking note:</strong> Let us know your requested dates to confirm scheduling.</p>
-        </div>
-      </div>
-    </section>
+<!-- PHOTO STRIP -->
+<div class="card">
+  <div class="gallery" id="gallery">
+    <img>
+    <img>
+    <img>
+  </div>
+</div>
 
-    
+<!-- TEXT SECTIONS -->
+<div class="grid">
 
-    <section class="card" style="margin-top: 22px;">
-      <h2>Guest Notes</h2>
+<div class="card">
+<h2>About the Cabin</h2>
+<p>
+Nestled in the Hocking Hills, Greenbrier Ridge Hideaway offers privacy, quiet, and a true escape.
+The property features hiking trails, abundant wildlife, and even a hidden cave—along with all the comforts of home.
+</p>
+<ul>
+<li>Secluded setting with no neighbors</li>
+<li>On-site hiking and wildlife</li>
+<li>Maximum 2 guests • Adults only</li>
+<li>5 night stays or less</li>
+</ul>
+</div>
 
-      <p>
-        At the end of your stay, simply lock the cabin and leave the keys in the lock box. A cleaning service will handle all bedding, laundry, and preparation for the next guest. All we ask is that you pay the $85 cleaning fee.
-      </p>
+<div class="card">
+<h2>Contact</h2>
+<div class="contact-box">
+<p><b>Name:</b> Scott Fouts</p>
+<p><b>Email:</b> scott.fouts@yahoo.com</p>
+<p><b>Text:</b> <a href="sms:+17406013959">740-601-3959</a></p>
+<p><b>Booking:</b> Let us know your requested dates</p>
+</div>
+</div>
 
-          <p>
-        If you would like to make an additional donation, any excess funds will be directed to the Fouts Family Music Scholarship at OCU.
-      </p>
+</div>
 
-    </section>
-  </main>
+<div class="card">
+<h2>Guest Notes</h2>
+<p>
+At the end of your stay, simply lock the cabin and leave the keys in the lock box.
+A cleaning service will handle everything for the next guest.
+All we ask is that you pay the $85 cleaning fee.
+</p>
 
-  <footer class="footer wrap">
-    Greenbrier Ridge Hideaway • Contact us for availability requests
-  </footer>
-  <script>
-    const photoList = [
-      { src: 'photos/photo1.jpg', alt: 'Cabin photo 1' },
-      { src: 'photos/photo2.jpg', alt: 'Cabin photo 2' },
-      { src: 'photos/photo3.jpg', alt: 'Cabin photo 3' },
-      { src: 'photos/photo4.jpg', alt: 'Cabin photo 4' },
-      { src: 'photos/photo5.jpg', alt: 'Cabin photo 5' },
-      { src: 'photos/photo6.jpg', alt: 'Cabin photo 6' },
-      { src: 'photos/photo7.jpg', alt: 'Cabin photo 7' },
-      { src: 'photos/photo8.jpg', alt: 'Cabin photo 8' },
-      { src: 'photos/photo9.jpg', alt: 'Cabin photo 9' },
-      { src: 'photos/photo10.jpg', alt: 'Cabin photo 10' },
-      { src: 'photos/photo11.jpg', alt: 'Cabin photo 11' },
-      { src: 'photos/photo12.jpg', alt: 'Cabin photo 12' }
-    ];
+<p>
+If you would like to make an additional donation, any excess funds will be directed to the Fouts Family Music Scholarship at OCU.
+</p>
+</div>
 
-    const gallery = document.getElementById('rotatingGallery');
-    const galleryImages = gallery.querySelectorAll('img');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImage = document.getElementById('lightboxImage');
-    const lightboxClose = document.getElementById('lightboxClose');
-    let startIndex = 0;
+</div>
 
-    function renderGallery() {
-      galleryImages.forEach((img, i) => {
-        const photo = photoList[(startIndex + i) % photoList.length];
-        img.src = photo.src;
-        img.alt = photo.alt;
-        img.dataset.fullsrc = photo.src;
-      });
-    }
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="close">&times;</span>
+  <img id="lightbox-img">
+</div>
 
-    function rotateGallery() {
-      startIndex = (startIndex + 1) % photoList.length;
-      renderGallery();
-    }
+<script>
+const photos = [
+"photos/photo1.jpg",
+"photos/photo2.jpg",
+"photos/photo3.jpg",
+"photos/photo4.jpg",
+"photos/photo5.jpg",
+"photos/photo6.jpg",
+"photos/photo7.jpg",
+"photos/photo8.jpg",
+"photos/photo9.jpg",
+"photos/photo10.jpg",
+"photos/photo11.jpg",
+"photos/photo12.jpg"
+];
 
-    renderGallery();
-    setInterval(rotateGallery, 5000);
+let index = 0;
+const imgs = document.querySelectorAll("#gallery img");
 
-    galleryImages.forEach((img) => {
-      img.addEventListener('click', () => {
-        lightboxImage.src = img.dataset.fullsrc || img.src;
-        lightboxImage.alt = img.alt;
-        lightbox.classList.add('active');
-        lightbox.setAttribute('aria-hidden', 'false');
-      });
-    });
+function updateGallery() {
+  imgs.forEach((img, i) => {
+    img.src = photos[(index + i) % photos.length];
+  });
+}
 
-    function closeLightbox() {
-      lightbox.classList.remove('active');
-      lightbox.setAttribute('aria-hidden', 'true');
-      lightboxImage.src = '';
-    }
+setInterval(() => {
+  index = (index + 1) % photos.length;
+  updateGallery();
+}, 5000);
 
-    lightboxClose.addEventListener('click', closeLightbox);
+updateGallery();
 
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
+/* LIGHTBOX */
+const lightbox = document.getElementById("lightbox");
+const lightImg = document.getElementById("lightbox-img");
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-        closeLightbox();
-      }
-    });
-  </script>
+imgs.forEach(img => {
+  img.onclick = () => {
+    lightImg.src = img.src;
+    lightbox.classList.add("active");
+  };
+});
+
+document.getElementById("close").onclick = () => {
+  lightbox.classList.remove("active");
+};
+
+lightbox.onclick = (e) => {
+  if(e.target === lightbox) lightbox.classList.remove("active");
+};
+</script>
+
 </body>
 </html>
