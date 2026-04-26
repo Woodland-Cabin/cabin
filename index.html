@@ -273,6 +273,16 @@
       box-shadow: 0 10px 24px rgba(0,0,0,0.22);
     }
 
+    .gallery {
+      user-select: none;
+      touch-action: pan-y;
+      cursor: grab;
+    }
+
+    .gallery.dragging {
+      cursor: grabbing;
+    }
+
     .contact-box {
       background: rgba(242,233,220,0.82);
       border: 1px solid rgba(80,55,30,0.20);
@@ -466,7 +476,13 @@
     const lightbox = document.getElementById('lightbox');
     const lightboxImage = document.getElementById('lightboxImage');
     const lightboxClose = document.getElementById('lightboxClose');
+
     let startIndex = 0;
+    let rotationTimer;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerMoved = false;
+    let pointerDown = false;
 
     function renderGallery() {
       galleryImages.forEach((img, i) => {
@@ -477,16 +493,79 @@
       });
     }
 
+    function nextPhotos() {
+      startIndex = (startIndex + 1) % photoList.length;
+      renderGallery();
+      restartRotation();
+    }
+
+    function previousPhotos() {
+      startIndex = (startIndex - 1 + photoList.length) % photoList.length;
+      renderGallery();
+      restartRotation();
+    }
+
     function rotateGallery() {
       startIndex = (startIndex + 1) % photoList.length;
       renderGallery();
     }
 
+    function restartRotation() {
+      clearInterval(rotationTimer);
+      rotationTimer = setInterval(rotateGallery, 5000);
+    }
+
     renderGallery();
-    setInterval(rotateGallery, 5000);
+    restartRotation();
+
+    gallery.addEventListener('pointerdown', (e) => {
+      pointerDown = true;
+      pointerMoved = false;
+      pointerStartX = e.clientX;
+      pointerStartY = e.clientY;
+      gallery.classList.add('dragging');
+    });
+
+    gallery.addEventListener('pointermove', (e) => {
+      if (!pointerDown) return;
+      const dx = e.clientX - pointerStartX;
+      const dy = e.clientY - pointerStartY;
+
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        pointerMoved = true;
+      }
+    });
+
+    function finishSwipe(e) {
+      if (!pointerDown) return;
+
+      const dx = e.clientX - pointerStartX;
+      const dy = e.clientY - pointerStartY;
+
+      pointerDown = false;
+      gallery.classList.remove('dragging');
+
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) {
+          nextPhotos();
+        } else {
+          previousPhotos();
+        }
+      }
+    }
+
+    gallery.addEventListener('pointerup', finishSwipe);
+    gallery.addEventListener('pointercancel', () => {
+      pointerDown = false;
+      gallery.classList.remove('dragging');
+    });
+    gallery.addEventListener('pointerleave', (e) => {
+      if (pointerDown) finishSwipe(e);
+    });
 
     galleryImages.forEach((img) => {
       img.addEventListener('click', () => {
+        if (pointerMoved) return;
         lightboxImage.src = img.dataset.fullsrc || img.src;
         lightboxImage.alt = img.alt;
         lightbox.classList.add('active');
@@ -509,6 +588,11 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && lightbox.classList.contains('active')) {
         closeLightbox();
+      }
+
+      if (!lightbox.classList.contains('active')) {
+        if (e.key === 'ArrowRight') nextPhotos();
+        if (e.key === 'ArrowLeft') previousPhotos();
       }
     });
   </script>
