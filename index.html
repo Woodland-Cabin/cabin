@@ -147,12 +147,20 @@
       opacity: 0.9;
     }
 
-    .hero p {
-      max-width: 620px;
-      margin: 0;
-      font-size: 1.08rem;
-      color: #fffdf7;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.55);
+    .hero-invite {
+      max-width: 680px;
+      margin: 16px 0 0;
+      padding: 14px 18px;
+      border-left: 4px solid var(--gold);
+      background: rgba(26, 18, 11, 0.42);
+      color: #f3eddc;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: clamp(1.05rem, 1.8vw, 1.22rem);
+      line-height: 1.6;
+      letter-spacing: 0.015em;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.58);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+      border-radius: 0 12px 12px 0;
     }
 
     .top-actions {
@@ -368,7 +376,7 @@
 
       <div class="tagline">A secluded cabin retreat in the Hocking Hills</div>
 
-      <p>
+      <p class="hero-invite">
         You are invited to spend a relaxing getaway, surrounded by quiet woods, fresh air, and the simplicity of time away.
       </p>
 
