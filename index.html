@@ -1,232 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Greenbrier Ridge Hideaway</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Greenbrier Ridge Hideaway</title>
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(rgba(20,15,10,0.65), rgba(20,15,10,0.65)), url('wood.jpg') center/cover;
-}
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7RMLM6D3BN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', 'G-7RMLM6D3BN');
+  </script>
 
-.hero {
-  background: url('hero.jpg') center/cover;
-  color: white;
-  padding: 80px 20px;
-}
+  <!-- Font for the park-sign style title -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
 
-.hero h1 {
-  font-size: 3em;
-  margin-bottom: 10px;
-}
+  <style>
+    :root {
+      --bg: #2b1f14;
+      --card: #f2e9dc;
+      --card-soft: rgba(242, 233, 220, 0.94);
+      --text: #1f2937;
+      --green: #263719;
+      --gold: #c69a45;
+      --brown: #3a2415;
+      --brown-light: #6f4b25;
+      --border: rgba(93, 65, 39, 0.22);
+      --shadow: 0 14px 34px rgba(0,0,0,0.24);
+      --radius: 18px;
+      --maxw: 1180px;
+    }
 
-.hero p {
-  max-width: 600px;
-}
+    * { box-sizing: border-box; }
 
-.btn {
-  display: inline-block;
-  margin-top: 15px;
-  padding: 12px 20px;
-  background: white;
-  color: black;
-  border-radius: 25px;
-  text-decoration: none;
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(rgba(20,15,10,0.62), rgba(20,15,10,0.72)), url('wood.jpg') center/cover fixed;
+      line-height: 1.55;
+    }
 
-.wrap {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-}
+    a {
+      color: var(--brown-light);
+      text-decoration: none;
+    }
 
-.card {
-  background: #f2e9dc;
-  padding: 20px;
-  border-radius: 20px;
-  margin-top: 20px;
-}
+    a:hover { text-decoration: underline; }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
+    .hero {
+      position: relative;
+      min-height: 430px;
+      color: white;
+      background: linear-gradient(90deg, rgba(0,0,0,0.70) 0%, rgba(0,0,0,0.42) 42%, rgba(0,0,0,0.10) 100%),
+        url('hero.jpg') center 68%/cover;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.38);
+    }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 10px;
-}
+    .hero-content {
+      width: 100%;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 46px 28px;
+    }
 
-.gallery img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 15px;
-  cursor: pointer;
-}
+    .park-sign {
+      display: inline-block;
+      background: linear-gradient(#4b2f18, #2b1a10);
+      border: 4px solid var(--gold);
+      border-radius: 14px;
+      padding: 16px 24px 18px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 12px 30px rgba(0,0,0,0.35);
+      position: relative;
+      margin-bottom: 18px;
+    }
 
-.contact-box {
-  background: rgba(242,233,220,0.9);
-  padding: 15px;
-  border-radius: 15px;
-}
+    .park-sign::before,
+    .park-sign::after {
+      content: "";
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #f3f0e5, #777 58%, #242424 100%);
+      top: 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.45);
+    }
 
-/* LIGHTBOX */
-.lightbox {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  justify-content: center;
-  align-items: center;
-}
+    .park-sign::before { left: 14px; }
+    .park-sign::after { right: 14px; }
 
-.lightbox.active {
-  display: flex;
-}
+    .park-title {
+      margin: 0;
+      font-family: 'Oswald', Arial, sans-serif;
+      font-size: clamp(2.15rem, 5vw, 4.15rem);
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: #f3eddc;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.85);
+      padding: 0 16px;
+      white-space: nowrap;
+    }
 
-.lightbox img {
-  max-width: 90%;
-  max-height: 90%;
-  border-radius: 10px;
-}
+    .tagline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 2px 0 18px;
+      color: var(--gold);
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+    }
 
-.lightbox-close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
-}
-</style>
+    .tagline::before,
+    .tagline::after {
+      content: "";
+      height: 2px;
+      width: 150px;
+      max-width: 18vw;
+      background: var(--gold);
+      opacity: 0.9;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 0;
+      font-size: 1.08rem;
+      color: #fffdf7;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.55);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      border-radius: 999px;
+      font-weight: bold;
+      border: 1px solid rgba(80,55,30,0.25);
+      box-shadow: 0 5px 14px rgba(0,0,0,0.18);
+    }
+
+    .btn-primary {
+      background: #f4eadc;
+      color: var(--brown);
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .card {
+      background: var(--card-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .photo-card {
+      margin-top: 0;
+      padding: 22px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--green);
+      font-size: 1.7rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .card h2::before {
+      content: "♣ ";
+      color: var(--green);
+      font-size: 0.9em;
+    }
+
+    .details-list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .details-list li {
+      margin: 8px 0;
+    }
+
+    .details-list li::marker {
+      color: var(--green);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      border-radius: 14px;
+      border: 1px solid rgba(80,55,30,0.25);
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      background: #ddd;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.015);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.22);
+    }
+
+    .contact-box {
+      background: rgba(242,233,220,0.82);
+      border: 1px solid rgba(80,55,30,0.20);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .contact-box p {
+      margin: 10px 0;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.86);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(94vw, 1400px);
+      max-height: 88vh;
+      width: auto;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.38);
+      background: #111;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-size: 2.2rem;
+      line-height: 1;
+      color: white;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      color: #e9ddcd;
+      font-size: 0.95rem;
+      padding: 22px 0 38px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.45);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        min-height: 430px;
+        align-items: end;
+      }
+
+      .park-sign {
+        padding: 14px 16px;
+      }
+
+      .park-title {
+        white-space: normal;
+        letter-spacing: 0.075em;
+        padding: 0 10px;
+      }
+
+      .tagline::before,
+      .tagline::after {
+        width: 44px;
+        max-width: 12vw;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery img {
+        height: 240px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="hero">
+    <div class="hero-content">
+      <div class="park-sign">
+        <h1 class="park-title">Greenbrier Ridge Hideaway</h1>
+      </div>
+      <div class="tagline">A secluded cabin retreat in the Hocking Hills</div>
+      <p>
+        You are invited to spend a relaxing getaway, surrounded by quiet woods, fresh air, and the simplicity of time away.
+      </p>
+      <div class="top-actions">
+        <a class="btn btn-primary" href="https://calendar.google.com/calendar/u/0/embed?src=5e7c29ebb47f4d2cc35effba6dc72546daed585293fa47f6a744991e457dac00@group.calendar.google.com&ctz=America/Phoenix" target="_blank" rel="noopener noreferrer">View Availability</a>
+      </div>
+    </div>
+  </header>
 
-<div class="hero">
-  <h1>Greenbrier Ridge Hideaway</h1>
-  <p>You are invited to spend a relaxing getaway, surrounded by quiet woods, fresh air, and the simplicity of time away.</p>
-  <a class="btn" href="https://calendar.google.com" target="_blank">View Availability</a>
-</div>
+  <main class="wrap">
+    <section class="card photo-card">
+      <div class="gallery" id="rotatingGallery">
+        <img src="photos/photo1.jpg" alt="Cabin photo 1" />
+        <img src="photos/photo2.jpg" alt="Cabin photo 2" />
+        <img src="photos/photo3.jpg" alt="Cabin photo 3" />
+      </div>
+    </section>
 
-<div class="wrap">
+    <section class="grid">
+      <div class="card">
+        <h2>About the Cabin</h2>
+        <p>
+          Nestled in the Hocking Hills, Greenbrier Ridge Hideaway offers privacy, quiet, and a true escape.
+          The property features hiking trails, abundant wildlife, and even a hidden cave—along with all the comforts of home.
+        </p>
+        <ul class="details-list">
+          <li>Secluded setting with no neighbors</li>
+          <li>On-site hiking and frequent wildlife sightings</li>
+          <li>Maximum 2 guests • Adults only</li>
+          <li>Please keep stays to 5 nights or less</li>
+        </ul>
+      </div>
 
-<!-- PHOTO STRIP -->
-<div class="card">
-  <div class="gallery" id="gallery">
-    <img>
-    <img>
-    <img>
+      <div class="card">
+        <h2>Contact</h2>
+        <div class="contact-box">
+          <p><strong>Name:</strong> Scott Fouts</p>
+          <p><strong>Email:</strong> <a href="mailto:scott.fouts@yahoo.com">scott.fouts@yahoo.com</a></p>
+          <p><strong>Text:</strong> <a href="sms:+17406013959">740-601-3959</a></p>
+          <p><strong>Booking note:</strong> Let us know your requested dates to check availability.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 24px;">
+      <h2>Guest Notes</h2>
+      <p>
+        At the end of your stay, simply lock the cabin and leave the keys in the lock box. A cleaning service will handle everything for the next guest. All we ask is that you pay the $85 cleaning fee.
+      </p>
+      <p>
+        If you would like to make an additional donation, any excess funds will be directed to the Fouts Family Music Scholarship at OCU.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    Greenbrier Ridge Hideaway • Contact us for availability requests
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close image">&times;</button>
+    <img id="lightboxImage" src="" alt="Expanded photo" />
   </div>
-</div>
 
-<!-- TEXT SECTIONS -->
-<div class="grid">
+  <script>
+    const photoList = [
+      { src: 'photos/photo1.jpg', alt: 'Cabin photo 1' },
+      { src: 'photos/photo2.jpg', alt: 'Cabin photo 2' },
+      { src: 'photos/photo3.jpg', alt: 'Cabin photo 3' },
+      { src: 'photos/photo4.jpg', alt: 'Cabin photo 4' },
+      { src: 'photos/photo5.jpg', alt: 'Cabin photo 5' },
+      { src: 'photos/photo6.jpg', alt: 'Cabin photo 6' },
+      { src: 'photos/photo7.jpg', alt: 'Cabin photo 7' },
+      { src: 'photos/photo8.jpg', alt: 'Cabin photo 8' },
+      { src: 'photos/photo9.jpg', alt: 'Cabin photo 9' },
+      { src: 'photos/photo10.jpg', alt: 'Cabin photo 10' },
+      { src: 'photos/photo11.jpg', alt: 'Cabin photo 11' },
+      { src: 'photos/photo12.jpg', alt: 'Cabin photo 12' }
+    ];
 
-<div class="card">
-<h2>About the Cabin</h2>
-<p>
-Nestled in the Hocking Hills, Greenbrier Ridge Hideaway offers privacy, quiet, and a true escape.
-The property features hiking trails, abundant wildlife, and even a hidden cave—along with all the comforts of home.
-</p>
-<ul>
-<li>Secluded setting with no neighbors</li>
-<li>On-site hiking and wildlife</li>
-<li>Maximum 2 guests • Adults only</li>
-<li>5 night stays or less</li>
-</ul>
-</div>
+    const gallery = document.getElementById('rotatingGallery');
+    const galleryImages = gallery.querySelectorAll('img');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxClose = document.getElementById('lightboxClose');
+    let startIndex = 0;
 
-<div class="card">
-<h2>Contact</h2>
-<div class="contact-box">
-<p><b>Name:</b> Scott Fouts</p>
-<p><b>Email:</b> scott.fouts@yahoo.com</p>
-<p><b>Text:</b> <a href="sms:+17406013959">740-601-3959</a></p>
-<p><b>Booking:</b> Let us know your requested dates</p>
-</div>
-</div>
+    function renderGallery() {
+      galleryImages.forEach((img, i) => {
+        const photo = photoList[(startIndex + i) % photoList.length];
+        img.src = photo.src;
+        img.alt = photo.alt;
+        img.dataset.fullsrc = photo.src;
+      });
+    }
 
-</div>
+    function rotateGallery() {
+      startIndex = (startIndex + 1) % photoList.length;
+      renderGallery();
+    }
 
-<div class="card">
-<h2>Guest Notes</h2>
-<p>
-At the end of your stay, simply lock the cabin and leave the keys in the lock box.
-A cleaning service will handle everything for the next guest.
-All we ask is that you pay the $85 cleaning fee.
-</p>
+    renderGallery();
+    setInterval(rotateGallery, 5000);
 
-<p>
-If you would like to make an additional donation, any excess funds will be directed to the Fouts Family Music Scholarship at OCU.
-</p>
-</div>
+    galleryImages.forEach((img) => {
+      img.addEventListener('click', () => {
+        lightboxImage.src = img.dataset.fullsrc || img.src;
+        lightboxImage.alt = img.alt;
+        lightbox.classList.add('active');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+    });
 
-</div>
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxImage.src = '';
+    }
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox">
-  <span class="lightbox-close" id="close">&times;</span>
-  <img id="lightbox-img">
-</div>
+    lightboxClose.addEventListener('click', closeLightbox);
 
-<script>
-const photos = [
-"photos/photo1.jpg",
-"photos/photo2.jpg",
-"photos/photo3.jpg",
-"photos/photo4.jpg",
-"photos/photo5.jpg",
-"photos/photo6.jpg",
-"photos/photo7.jpg",
-"photos/photo8.jpg",
-"photos/photo9.jpg",
-"photos/photo10.jpg",
-"photos/photo11.jpg",
-"photos/photo12.jpg"
-];
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
 
-let index = 0;
-const imgs = document.querySelectorAll("#gallery img");
-
-function updateGallery() {
-  imgs.forEach((img, i) => {
-    img.src = photos[(index + i) % photos.length];
-  });
-}
-
-setInterval(() => {
-  index = (index + 1) % photos.length;
-  updateGallery();
-}, 5000);
-
-updateGallery();
-
-/* LIGHTBOX */
-const lightbox = document.getElementById("lightbox");
-const lightImg = document.getElementById("lightbox-img");
-
-imgs.forEach(img => {
-  img.onclick = () => {
-    lightImg.src = img.src;
-    lightbox.classList.add("active");
-  };
-});
-
-document.getElementById("close").onclick = () => {
-  lightbox.classList.remove("active");
-};
-
-lightbox.onclick = (e) => {
-  if(e.target === lightbox) lightbox.classList.remove("active");
-};
-</script>
-
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  </script>
 </body>
 </html>
