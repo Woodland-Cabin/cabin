@@ -232,11 +232,7 @@
       text-transform: uppercase;
     }
 
-    .card h2::before {
-      content: "♣ ";
-      color: var(--green);
-      font-size: 0.9em;
-    }
+    
 
     .details-list {
       margin: 0;
@@ -247,6 +243,9 @@
       margin: 8px 0;
     }
 
+    .details-list {
+      list-style: disc;
+    }
     .details-list li::marker {
       color: var(--green);
     }
@@ -409,11 +408,10 @@
       <div class="card">
         <h2>About the Cabin</h2>
         <p>
-          Nestled in the Hocking Hills, Greenbrier Ridge Hideaway offers privacy, quiet, and a true escape. It is a bird watchers dream. The property features hiking trails and abundant wildlife, along with all the comforts of home.
+          Nestled in the Hocking Hills, Greenbrier Ridge Hideaway offers privacy, quiet, and a true escape. It is a birdwatcher’s dream. The property features hiking trails and abundant wildlife, along with all the comforts of home.
         </p>
 
-        <ul class="details-list">
-                                        <li>Maximum 2 guests • Adults only</li>
+        <ul class="details-list"><li>Maximum 2 guests • Adults only</li>
           <li>Please keep stays to 5 nights or less</li>
         </ul>
       </div>
@@ -423,9 +421,7 @@
         <div class="contact-box">
           <p><strong>Name:</strong> Scott Fouts</p>
           <p><strong>Email:</strong> <a href="mailto:scott.fouts@yahoo.com">scott.fouts@yahoo.com</a></p>
-          <p><strong>Text:</strong> <a href="sms:+17406013959">740-601-3959</a></p>
-          <p><strong>Booking note:</strong> Let us know your requested dates to check availability.</p>
-        </div>
+          <p><strong>Text:</strong> <a href="sms:+17406013959">740-601-3959</a></p></div>
       </div>
     </section>
 
@@ -476,12 +472,10 @@
 
     let startIndex = 0;
     let rotationTimer;
-    let swipeStartX = 0;
-    let swipeStartY = 0;
-    let swipeEndX = 0;
-    let swipeEndY = 0;
-    let didSwipe = false;
-    let mouseDown = false;
+    let pointerStartX = 0;
+    let pointerStartY = 0;
+    let pointerMoved = false;
+    let pointerDown = false;
 
     function renderGallery() {
       galleryImages.forEach((img, i) => {
@@ -489,18 +483,7 @@
         img.src = photo.src;
         img.alt = photo.alt;
         img.dataset.fullsrc = photo.src;
-        img.draggable = false;
       });
-    }
-
-    function rotateGallery() {
-      startIndex = (startIndex + 1) % photoList.length;
-      renderGallery();
-    }
-
-    function restartRotation() {
-      clearInterval(rotationTimer);
-      rotationTimer = setInterval(rotateGallery, 5000);
     }
 
     function nextPhotos() {
@@ -515,98 +498,67 @@
       restartRotation();
     }
 
-    function handleSwipe() {
-      const dx = swipeEndX - swipeStartX;
-      const dy = swipeEndY - swipeStartY;
+    function rotateGallery() {
+      startIndex = (startIndex + 1) % photoList.length;
+      renderGallery();
+    }
 
-      didSwipe = Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy);
-
-      if (!didSwipe) return;
-
-      if (dx < 0) {
-        nextPhotos();
-      } else {
-        previousPhotos();
-      }
+    function restartRotation() {
+      clearInterval(rotationTimer);
+      rotationTimer = setInterval(rotateGallery, 5000);
     }
 
     renderGallery();
     restartRotation();
 
-    // Mobile/tablet swipe
-    gallery.addEventListener('touchstart', (e) => {
-      if (!e.touches || e.touches.length !== 1) return;
-      swipeStartX = e.touches[0].clientX;
-      swipeStartY = e.touches[0].clientY;
-      swipeEndX = swipeStartX;
-      swipeEndY = swipeStartY;
-      didSwipe = false;
-    }, { passive: true });
-
-    gallery.addEventListener('touchmove', (e) => {
-      if (!e.touches || e.touches.length !== 1) return;
-      swipeEndX = e.touches[0].clientX;
-      swipeEndY = e.touches[0].clientY;
-    }, { passive: true });
-
-    gallery.addEventListener('touchend', () => {
-      handleSwipe();
-
-      // Prevent the follow-up click from opening the lightbox after a swipe.
-      if (didSwipe) {
-        setTimeout(() => {
-          didSwipe = false;
-        }, 250);
-      }
-    });
-
-    // Desktop drag
-    gallery.addEventListener('mousedown', (e) => {
-      mouseDown = true;
-      swipeStartX = e.clientX;
-      swipeStartY = e.clientY;
-      swipeEndX = swipeStartX;
-      swipeEndY = swipeStartY;
-      didSwipe = false;
+    gallery.addEventListener('pointerdown', (e) => {
+      pointerDown = true;
+      pointerMoved = false;
+      pointerStartX = e.clientX;
+      pointerStartY = e.clientY;
       gallery.classList.add('dragging');
     });
 
-    gallery.addEventListener('mousemove', (e) => {
-      if (!mouseDown) return;
-      swipeEndX = e.clientX;
-      swipeEndY = e.clientY;
-    });
+    gallery.addEventListener('pointermove', (e) => {
+      if (!pointerDown) return;
+      const dx = e.clientX - pointerStartX;
+      const dy = e.clientY - pointerStartY;
 
-    gallery.addEventListener('mouseup', () => {
-      if (!mouseDown) return;
-      mouseDown = false;
-      gallery.classList.remove('dragging');
-      handleSwipe();
-
-      if (didSwipe) {
-        setTimeout(() => {
-          didSwipe = false;
-        }, 250);
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        pointerMoved = true;
       }
     });
 
-    gallery.addEventListener('mouseleave', () => {
-      if (!mouseDown) return;
-      mouseDown = false;
-      gallery.classList.remove('dragging');
-      handleSwipe();
+    function finishSwipe(e) {
+      if (!pointerDown) return;
 
-      if (didSwipe) {
-        setTimeout(() => {
-          didSwipe = false;
-        }, 250);
+      const dx = e.clientX - pointerStartX;
+      const dy = e.clientY - pointerStartY;
+
+      pointerDown = false;
+      gallery.classList.remove('dragging');
+
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) {
+          nextPhotos();
+        } else {
+          previousPhotos();
+        }
       }
+    }
+
+    gallery.addEventListener('pointerup', finishSwipe);
+    gallery.addEventListener('pointercancel', () => {
+      pointerDown = false;
+      gallery.classList.remove('dragging');
+    });
+    gallery.addEventListener('pointerleave', (e) => {
+      if (pointerDown) finishSwipe(e);
     });
 
     galleryImages.forEach((img) => {
       img.addEventListener('click', () => {
-        if (didSwipe) return;
-
+        if (pointerMoved) return;
         lightboxImage.src = img.dataset.fullsrc || img.src;
         lightboxImage.alt = img.alt;
         lightbox.classList.add('active');
