@@ -462,9 +462,27 @@
       { src: 'photos/photo9.jpg', alt: 'Cabin photo 9' },
       { src: 'photos/photo10.jpg', alt: 'Cabin photo 10' },
       { src: 'photos/photo11.jpg', alt: 'Cabin photo 11' },
-      { src: 'photos/photo12.jpg', alt: 'Cabin photo 12' }
+      { src: 'photos/photo12.jpg', alt: 'Cabin photo 12' },
+      { src: 'photos/photo13.jpg', alt: 'Cabin photo 13' },
+      { src: 'photos/photo14.jpg', alt: 'Cabin photo 14' },
+      { src: 'photos/photo15.jpg', alt: 'Cabin photo 15' },
+      { src: 'photos/photo16.jpg', alt: 'Cabin photo 16' },
+      { src: 'photos/photo17.jpg', alt: 'Cabin photo 17' },
+      { src: 'photos/photo18.jpg', alt: 'Cabin photo 18' },
+      { src: 'photos/photo19.jpg', alt: 'Cabin photo 19' },
+      { src: 'photos/photo20.jpg', alt: 'Cabin photo 20' }
     ];
+function shufflePhotos(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
 
+    [array[i], array[randomIndex]] =
+      [array[randomIndex], array[i]];
+  }
+}
+
+shufflePhotos(photoList);
+    
     const gallery = document.getElementById('rotatingGallery');
     const galleryImages = gallery.querySelectorAll('img');
     const lightbox = document.getElementById('lightbox');
